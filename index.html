@@ -10,6 +10,27 @@
     })(window,document,'script','dataLayer','GTM-P9ZP57DD');</script>
     <!-- End Google Tag Manager -->
 
+    <script>
+        // 1. Inicjalizacja DataLayer
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+
+        // 2. Ustawienie domyślnej zgody na "DENIED" (Odmowa)
+        gtag('consent', 'default', {
+            'ad_storage': 'denied',
+            'ad_user_data': 'denied',
+            'ad_personalization': 'denied',
+            'analytics_storage': 'denied',
+            'wait_for_update': 500
+        });
+        
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','G-4NPFDGJQGM');
+    </script>
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TeaBox - Rozwiązanie dla Twojego kubka</title>
@@ -126,6 +147,8 @@
     </style>
 </head>
 <body>
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=G-4NPFDGJQGM"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P9ZP57DD"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -270,6 +293,7 @@
     </div>
 
     <script>
+        /* --- LOGIKA KARUZELI (Bez zmian) --- */
         let slideIndices = { 'hero-carousel': 0, 'testimonials-carousel': 0 };
 
         function changeSlide(carouselId, n) {
@@ -290,16 +314,45 @@
             slideIndices[carouselId] = currentIndex;
         }
 
+        /* --- OBSŁUGA FORMULARZA --- */
         document.getElementById('lead-form').addEventListener('submit', function(e) {
             e.preventDefault();
             document.getElementById('form-feedback').style.display = 'block';
+            
+            // Wysłanie zdarzenia do GTM (DataLayer)
+            window.dataLayer.push({
+                'event': 'generate_lead',
+                'form_name': 'subscription_order'
+            });
             console.log("GTM Event Trigger: generate_lead");
         });
 
-        setTimeout(function() { document.getElementById('cookie-banner').style.display = 'block'; }, 1000);
+        /* --- LOGIKA CONSENT MODE (BANER) --- */
+        // Pokaż baner po 1 sekundzie, jeśli nie ma jeszcze decyzji
+        if (!localStorage.getItem('consentMode')) {
+            setTimeout(function() {
+                document.getElementById('cookie-banner').style.display = 'block';
+            }, 1000);
+        }
+
+        // Obsługa kliknięcia "Zgadzam się"
         document.getElementById('btn-accept-cookies').addEventListener('click', function() {
+            // 1. Aktualizacja zgody w GTM
+            gtag('consent', 'update', {
+                'ad_storage': 'granted',
+                'ad_user_data': 'granted',
+                'ad_personalization': 'granted',
+                'analytics_storage': 'granted'
+            });
+
+            // 2. Wysłanie zdarzenia technicznego, które "odpali" tagi GA4
+            window.dataLayer.push({'event': 'consent_update'});
+
+            // 3. Ukrycie banera i zapisanie w pamięci
             document.getElementById('cookie-banner').style.display = 'none';
+            localStorage.setItem('consentMode', 'granted');
         });
     </script>
 </body>
+
 </html>
