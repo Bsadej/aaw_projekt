@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-P9ZP57DD');</script>
+    <!-- End Google Tag Manager -->
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TeaBox - Rozwiązanie dla Twojego kubka</title>
+    <meta name="description" content="Nie wiesz jaką herbatę wybrać? Subskrypcja TeaBox to rozwiązanie. Co miesiąc nowe smaki prosto pod Twoje drzwi.">
+
+    <style>
+        /* --- STYLE PODSTAWOWE --- */
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; color: #333; line-height: 1.6; }
+        section { padding: 60px 20px; border-bottom: 1px solid #eee; }
+        h2 { text-align: center; color: #2c3e50; margin-bottom: 40px; font-size: 2em; }
+        .container { max-width: 1100px; margin: 0 auto; position: relative; }
+        
+        /* --- BUTTONY --- */
+        .btn { display: inline-block; padding: 12px 30px; background: #27ae60; color: white; text-decoration: none; border-radius: 4px; cursor: pointer; border: none; font-size: 16px; font-weight: 600; margin-top: 15px; transition: background 0.3s; }
+        .btn:hover { background: #219150; }
+        .btn-secondary { background: #7f8c8d; }
+        
+        /* Styl przycisku HERO (fioletowy) */
+        .btn-hero { background: #8e44ad; text-transform: uppercase; letter-spacing: 1px; } 
+        .btn-hero:hover { background: #732d91; }
+
+        .btn-buy { width: 100%; box-sizing: border-box; margin-top: 15px; }
+
+        /* --- HERO SECTION (FULL SCREEN) --- */
+        #hero { 
+            padding: 0; 
+            position: relative; 
+            height: 600px; /* Stała wysokość */
+            background-color: #333;
+        }
+
+        .carousel-container { 
+            width: 100%; 
+            height: 100%; 
+            position: relative; 
+        }
+
+        .carousel-slide { 
+            display: none; 
+            width: 100%; 
+            height: 100%; 
+            background-size: cover; 
+            background-position: center; 
+            position: relative;
+        }
+        .carousel-slide.active { display: block; animation: fadeEffect 1s; }
+
+        /* Ciemna nakładka (overlay) */
+        .hero-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.5); /* Nieco ciemniejsza dla czytelności */
+            z-index: 1;
+        }
+
+        .hero-content { 
+            position: absolute; 
+            top: 50%; 
+            left: 10%; 
+            transform: translateY(-50%); 
+            z-index: 2; 
+            color: white; 
+            max-width: 650px;
+            text-align: left; 
+        }
+
+        .hero-content h1 { 
+            font-size: 3.2em; 
+            margin: 0 0 15px 0; 
+            line-height: 1.1; 
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .hero-content p { 
+            font-size: 1.3em; 
+            margin-bottom: 25px; 
+            opacity: 0.95; 
+        }
+        
+        /* Strzałki nawigacji */
+        .prev, .next { cursor: pointer; position: absolute; top: 50%; width: auto; padding: 16px; margin-top: -22px; color: white; font-weight: bold; font-size: 24px; transition: 0.6s ease; user-select: none; z-index: 10; background: rgba(0,0,0,0.2); border: none; }
+        .next { right: 0; border-radius: 3px 0 0 3px; }
+        .prev { left: 0; border-radius: 3px 0 0 3px; }
+        .prev:hover, .next:hover { background-color: rgba(0,0,0,0.8); }
+
+        @keyframes fadeEffect { from {opacity: .4} to {opacity: 1} }
+
+        /* --- PRODUKTY --- */
+        .products-grid { display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; }
+        .product-card { border: 1px solid #eee; padding: 30px; border-radius: 8px; width: 300px; text-align: center; background: white; box-shadow: 0 4px 10px rgba(0,0,0,0.05); transition: transform 0.2s; }
+        .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .product-card h3 { color: #2c3e50; margin-top: 0; }
+
+        /* --- OPINIE --- */
+        #testimonials { background-color: #f9f9f9; }
+        .testimonial-carousel { max-width: 800px; margin: 0 auto; position: relative; padding: 0 40px; }
+        .testimonial-slide { display: none; text-align: center; padding: 20px; }
+        .testimonial-slide.active { display: block; animation: fadeEffect 1s; }
+        .testimonial-text { font-style: italic; font-size: 1.3em; color: #555; }
+        .testimonial-author { font-weight: bold; margin-top: 20px; display: block; color: #27ae60; }
+        
+        .t-prev, .t-next { cursor: pointer; position: absolute; top: 50%; transform: translateY(-50%); font-size: 24px; color: #333; background: none; border: none; }
+        .t-prev { left: 0; }
+        .t-next { right: 0; }
+
+        /* --- FORMULARZ --- */
+        .form-wrapper { max-width: 500px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        .form-group { margin-bottom: 20px; }
+        input, textarea { width: 100%; padding: 12px; margin-top: 5px; box-sizing: border-box; border: 1px solid #ddd; border-radius: 4px; font-family: inherit; }
+        
+        /* --- STOPKA --- */
+        footer { background: #2c3e50; color: white; text-align: center; padding: 30px; font-size: 14px; }
+        #cookie-banner { position: fixed; bottom: 0; width: 100%; background: #34495e; color: white; padding: 15px; text-align: center; display: none; z-index: 999; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P9ZP57DD"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    <section id="hero">
+        <div class="carousel-container" id="hero-carousel">
+            
+            <div class="carousel-slide active" style="background-image: url('hero_image.png');">
+                <div class="hero-overlay"></div>
+                <div class="hero-content">
+                    <div style="font-size: 40px; margin-bottom: 10px;"></div> 
+                    <h1>Gubisz się w gąszczu smaków?</h1>
+                    <p>Nie wiesz, jaką herbatę wybrać? My mamy rozwiązanie. Co miesiąc wyselekcjonowany zestaw najlepszych liści trafi prosto pod Twoje drzwi.</p>
+                    <a href="#products" class="btn btn-hero" id="cta-hero-slide1">Zobacz rozwiązanie</a>
+                </div>
+            </div>
+
+            <div class="carousel-slide" style="background-image: url('hero_image2.png');">
+                <div class="hero-overlay"></div>
+                <div class="hero-content">
+                    <div style="font-size: 40px; margin-bottom: 10px;"></div>
+                    <h1>Przestań szukać, zacznij smakować</h1>
+                    <p>Zaufaj naszym ekspertom. Ty nastawiasz wodę, my zajmujemy się resztą.</p>
+                    <a href="#products" class="btn btn-hero" id="cta-hero-slide2">Wybierz swój Box</a>
+                </div>
+            </div>
+
+            <button class="prev" onclick="changeSlide('hero-carousel', -1)">&#10094;</button>
+            <button class="next" onclick="changeSlide('hero-carousel', 1)">&#10095;</button>
+        </div>
+    </section>
+
+    <section id="products">
+        <div class="container">
+            <h2>Wybierz rozwiązanie dla siebie</h2>
+            <div class="products-grid">
+                
+                <div class="product-card">
+                    <h3>Box Klasyczny</h3>
+                    <p>Dla tych, którzy lubią sprawdzone smaki. Czarne i zielone klasyki.</p>
+                    <br>
+                    <a href="#" class="btn-details" style="color: #27ae60;" id="details-classic">Szczegóły pakietu</a><br>
+                    <a href="#form-section" class="btn btn-buy" id="buy-classic">Wybieram ten</a>
+                </div>
+
+                <div class="product-card" style="border: 2px solid #8e44ad; background: #fdfaff;">
+                    <h3 style="color: #8e44ad;">Box Niespodzianka</h3>
+                    <p>Dla poszukiwaczy przygód. Nie wiesz co dostaniesz, ale będzie pyszne!</p>
+                    <br>
+                    <a href="#" class="btn-details" style="color: #8e44ad;" id="details-mystery">Szczegóły pakietu</a><br>
+                    <a href="#form-section" class="btn btn-buy" style="background: #8e44ad;" id="buy-mystery">Wybieram ten</a>
+                </div>
+
+            </div>
+            
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="#form-section" class="btn btn-secondary" id="cta-section-products">Przejdź od razu do zamówienia</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="video">
+        <div class="container" style="text-align: center;">
+            <h2>Dlaczego warto pić czarną herbatę?</h2>
+            <iframe width="700" height="394" src="https://www.youtube.com/embed/Vg9yqWQBcTI?enablejsapi=1" title="Właściwości czarnej herbaty" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="max-width: 100%; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);"></iframe>
+            
+            <div style="margin-top: 30px;">
+                <a href="#form-section" class="btn" id="cta-section-video">Chcę spróbować</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="features">
+        <div class="container">
+            <h2>Dlaczego warto nam zaufać?</h2>
+            <ul style="list-style-type: none; padding: 0; font-size: 18px; max-width: 600px; margin: 0 auto; text-align: center;">
+                <li style="margin-bottom: 15px;">🔍 <strong>Selekcja eksperta</strong> - koniec z dylematami w sklepie</li>
+                <li style="margin-bottom: 15px;">📦 <strong>Wygoda</strong> - dostawa prosto pod drzwi</li>
+                <li style="margin-bottom: 15px;">🌱 <strong>Świeżość</strong> - liście z ostatnich zbiorów</li>
+                <li style="margin-bottom: 15px;">🔓 <strong>Elastyczność</strong> - rezygnujesz kiedy chcesz</li>
+            </ul>
+            <div style="text-align: center; margin-top: 30px;">
+                <a href="#form-section" class="btn" id="cta-section-features">Dołącz teraz</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="testimonials">
+        <div class="container">
+            <h2>Klienci, którzy rozwiązali swój problem</h2>
+            
+            <div class="testimonial-carousel" id="testimonials-carousel">
+                <div class="testimonial-slide active">
+                    <p class="testimonial-text">"Zawsze stałam pół godziny przed półką z herbatą. Teraz TeaBox decyduje za mnie, a ja piję same pyszności."</p>
+                    <span class="testimonial-author">- Anna K., Warszawa</span>
+                </div>
+                <div class="testimonial-slide">
+                    <p class="testimonial-text">"Bałem się eksperymentować, więc piłem ciągle to samo. Box Niespodzianka otworzył mi oczy na nowe smaki!"</p>
+                    <span class="testimonial-author">- Piotr N., Gdańsk</span>
+                </div>
+                <button class="t-prev" onclick="changeSlide('testimonials-carousel', -1)">&#10094;</button>
+                <button class="t-next" onclick="changeSlide('testimonials-carousel', 1)">&#10095;</button>
+            </div>
+
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="#form-section" class="btn" id="cta-section-testimonials">Zamów i sprawdź</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="form-section" style="background: #f4f4f4;">
+        <div class="container form-wrapper">
+            <h2>Złóż zamówienie</h2>
+            <form id="lead-form">
+                <div class="form-group">
+                    <label for="name">Imię i nazwisko:</label>
+                    <input type="text" id="name" name="name" required placeholder="Jan Kowalski">
+                </div>
+                <div class="form-group">
+                    <label for="phone">Telefon:</label>
+                    <input type="tel" id="phone" name="phone" required placeholder="123 456 789">
+                </div>
+                <div class="form-group">
+                    <label for="message">Wybór pakietu / Treść:</label>
+                    <textarea id="message" name="message" rows="4" placeholder="Interesuje mnie pakiet..."></textarea>
+                </div>
+                <button type="submit" class="btn" id="form-submit-btn" style="width: 100%;">Wyślij zamówienie</button>
+            </form>
+            <p id="form-feedback" style="display:none; color: green; text-align: center; margin-top: 15px; font-weight: bold;">Dziękujemy! Twoje zamówienie zostało przyjęte.</p>
+        </div>
+    </section>
+
+    <footer>
+        <p>
+            Administratorem Twoich danych jest TeaBox Sp. z o.o.<br>
+            <a href="#" style="color: #ccc;">Polityka Prywatności</a>
+        </p>
+    </footer>
+
+    <div id="cookie-banner">
+        <p>Używamy plików cookies. <button id="btn-accept-cookies" class="btn" style="padding: 5px 10px; font-size: 12px; margin-left: 10px; background: #27ae60;">Zgadzam się</button></p>
+    </div>
+
+    <script>
+        let slideIndices = { 'hero-carousel': 0, 'testimonials-carousel': 0 };
+
+        function changeSlide(carouselId, n) {
+            let container = document.getElementById(carouselId);
+            let slideClass = (carouselId === 'hero-carousel') ? 'carousel-slide' : 'testimonial-slide';
+            let slides = container.getElementsByClassName(slideClass);
+            let currentIndex = slideIndices[carouselId];
+            
+            slides[currentIndex].style.display = "none";
+            slides[currentIndex].classList.remove("active");
+
+            currentIndex += n;
+            if (currentIndex >= slides.length) { currentIndex = 0; }
+            if (currentIndex < 0) { currentIndex = slides.length - 1; }
+
+            slides[currentIndex].style.display = "block";
+            slides[currentIndex].classList.add("active");
+            slideIndices[carouselId] = currentIndex;
+        }
+
+        document.getElementById('lead-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            document.getElementById('form-feedback').style.display = 'block';
+            console.log("GTM Event Trigger: generate_lead");
+        });
+
+        setTimeout(function() { document.getElementById('cookie-banner').style.display = 'block'; }, 1000);
+        document.getElementById('btn-accept-cookies').addEventListener('click', function() {
+            document.getElementById('cookie-banner').style.display = 'none';
+        });
+    </script>
+</body>
+</html>
